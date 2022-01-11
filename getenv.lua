@@ -23,69 +23,45 @@
 -- lua-getenv
 -- Created by Masatoshi Teruya on 16/01/29.
 --
-local environ = require('process').getenv()
-local evalfile = require('util').evalfile
+local error = error
+local process_getenv = require('process').getenv
+local loadfile = require('loadchunk').file
 
---- get the system environment variables
---- @return evn
-local function getenvsys()
+--- get the environment variables from file that declared by environment
+--- @param filename string
+--- @return table<string, string> envs
+--- @return string err
+local function getenvfile(filename)
+    -- check arguments
+    if type(filename) ~= 'string' then
+        error('filename must be string', 2)
+    end
+
     local env = {}
+    local fn, err = loadfile(filename, env)
+    if err then
+        return nil, err
+    end
 
-    -- copy system environments
-    for k, v in pairs(environ) do
-        env[k] = v
+    -- run
+    local ok, perr = pcall(fn)
+    if not ok then
+        return nil, perr
     end
 
     return env
 end
 
---- get the environment variables from file that declared by environment
---- @param envname
---- @param dir
---- @param ext
---- @return env
---- @return err
-local function getenvfile(envname, dir, ext)
-    -- check arguments
-    if type(envname) ~= 'string' then
-        error('envname must be string', 2)
+--- get the system environment variables
+--- @vararg
+--- @return table<string, string> envs
+--- @return string err
+local function getenv(...)
+    if select('#', ...) > 0 then
+        return getenvfile(...)
     end
-
-    if dir == nil then
-        dir = '.'
-    elseif type(dir) ~= 'string' then
-        error('dir must be string', 2)
-    end
-
-    if ext == nil then
-        ext = '.lua'
-    elseif type(ext) ~= 'string' then
-        error('ext must be string', 2)
-    end
-
-    if environ[envname] then
-        local env = {}
-        -- load file as lua
-        local path = ('%s/%s%s'):format(dir, environ[envname], ext)
-        local fn, err = evalfile(path, env)
-        local ok
-
-        if err then
-            return nil, err
-        end
-
-        -- run
-        ok, err = pcall(fn)
-        if err then
-            return nil, err
-        end
-
-        return env
-    end
+    return process_getenv()
 end
 
-return {
-    sys = getenvsys,
-    file = getenvfile,
-}
+return getenv
 
