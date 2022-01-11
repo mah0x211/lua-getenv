@@ -1,38 +1,39 @@
 lua-getenv
 =======
 
+[![test](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml/badge.svg)](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/mah0x211/lua-getenv/badge.svg?branch=master)](https://coveralls.io/github/mah0x211/lua-getenv?branch=master)
+
 environment variables retrieval module.
 
 
 ## Installation
 
 ```
-luarocks install getenv --from=http://mah0x211.github.io/rocks/
+luarocks install getenv
 ```
 
+## envs, err = getenv( [filename] )
 
-## API
+get the environment variables.
 
-### getenv.sys
+**Parameters**
 
-Get the system environment variables.
+- `filename:string`: get the environment variables from specified file.
 
-- **Syntax**: `env = getenv.sys()`
-- **Returns**
-    - `env:table`
+**Returns**
 
+- `envs:table`: key-value pairs of the environment variables.
+- `err:string`: error message.
 
-### getenv.file
+**NOTE**
 
-Get the environment variables from file that declared by environment.
+the contents of the file must be written as a Lua script like the following;
 
-**NOTE: file content must be lua script**
+```lua
+FOO='BAR'
+HELLO='WORLD'
+```
 
-- **Syntax**: `env = getenv.file( envname [, dir [, ext]] )`
-- **Parameters**: 
-    - `envname:string`: environment variable name
-    - `dir:string`: target directory (default: `.`)
-    - `ext:string`: file extension (default: `.lua`)
-- **Returns**
-    - `env:table`
+the above global variables become environment variables.
 
