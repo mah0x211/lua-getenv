@@ -12,11 +12,13 @@ description = {
 dependencies = {
     "lua >= 5.1",
     "loadchunk >= 0.1.1",
-    "process >= 1.5.0",
 }
 build = {
     type = "builtin",
     modules = {
-        getenv = "getenv.lua"
+        getenv = "getenv.lua",
+        ['getenv.libc'] = {
+            sources = { 'src/libc.c' }
+        }
     }
 }
