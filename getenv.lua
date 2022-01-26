@@ -24,7 +24,7 @@
 -- Created by Masatoshi Teruya on 16/01/29.
 --
 local error = error
-local process_getenv = require('process').getenv
+local getenv_libc = require('getenv.libc')
 local loadfile = require('loadchunk').file
 
 --- get the environment variables from file that declared by environment
@@ -60,7 +60,7 @@ local function getenv(...)
     if select('#', ...) > 0 then
         return getenvfile(...)
     end
-    return process_getenv()
+    return getenv_libc()
 end
 
 return getenv
