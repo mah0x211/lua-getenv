@@ -37,28 +37,38 @@ function testcase.getenv()
     TEST_ENV=HELLO testcase ./test/
 ]])
     assert.equal(envs.TEST_ENV, 'HELLO')
+
+    -- test that get specified environment variable
+    assert.equal(getenv('TEST_ENV'), 'HELLO')
+
+    -- test that throws an error with invalid argument
+    local err = assert.throws(getenv, {})
+    assert.match(err, 'name must be string')
 end
 
 function testcase.getenv_with_filename()
     -- test that get environment variables from the file
-    local envs = assert(getenv(FILENAME))
+    local envs = assert(getenv(nil, FILENAME))
     assert.is_table(envs)
     assert.equal(envs, {
         FOO = 'BAR',
         HELLO = 'WORLD',
     })
 
+    -- test that get specified environment variable
+    assert.equal(getenv('HELLO', FILENAME), 'WORLD')
+
     -- test that return an error with invalid file contents
-    local _, err = getenv(FILENAME_INVALID)
+    local _, err = getenv(nil, FILENAME_INVALID)
     assert.is_nil(_)
     assert.match(err, 'unfinished string', false)
 
     -- test that return an error with unknown-file
-    _, err = getenv('./unknown-file')
+    _, err = getenv(nil, './unknown-file')
     assert.is_nil(_)
     assert.match(err, 'No.+file or directory', false)
 
     -- test that throws an error with invalid argument
-    err = assert.throws(getenv, {})
+    err = assert.throws(getenv, nil, {})
     assert.match(err, 'filename must be string')
 end
