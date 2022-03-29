@@ -24,6 +24,9 @@
 -- Created by Masatoshi Teruya on 16/01/29.
 --
 local error = error
+local pcall = pcall
+local type = type
+local getenv_lua = os.getenv
 local getenv_libc = require('getenv.libc')
 local loadfile = require('loadchunk').file
 
@@ -53,14 +56,34 @@ local function getenvfile(filename)
 end
 
 --- get the system environment variables
---- @vararg
+--- @param name string
+--- @param filename string
 --- @return table<string, string> envs
 --- @return string err
-local function getenv(...)
-    if select('#', ...) > 0 then
-        return getenvfile(...)
+local function getenv(name, filename)
+    local envfile
+
+    if filename ~= nil then
+        if type(filename) ~= 'string' then
+            error('filename must be string', 2)
+        end
+
+        local err
+        envfile, err = getenvfile(filename)
+        if err then
+            return nil, err
+        end
     end
-    return getenv_libc()
+
+    if name == nil then
+        return envfile or getenv_libc()
+    elseif type(name) ~= 'string' then
+        error('name must be string', 2)
+    elseif envfile then
+        return envfile[name]
+    end
+
+    return getenv_lua(name)
 end
 
 return getenv

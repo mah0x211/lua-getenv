@@ -2,7 +2,7 @@ lua-getenv
 =======
 
 [![test](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml/badge.svg)](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/mah0x211/lua-getenv/badge.svg?branch=master)](https://coveralls.io/github/mah0x211/lua-getenv?branch=master)
+[![codecov](https://codecov.io/gh/mah0x211/lua-getenv/branch/master/graph/badge.svg)](https://codecov.io/gh/mah0x211/lua-getenv)
 
 environment variables retrieval module.
 
@@ -13,17 +13,18 @@ environment variables retrieval module.
 luarocks install getenv
 ```
 
-## envs, err = getenv( [filename] )
+## env, err = getenv( [name [, filename]] )
 
-get the environment variables.
+get all environment variables or an environment variable with specified name.
 
 **Parameters**
 
+- `name:string`: name of the environment variable.
 - `filename:string`: get the environment variables from specified file.
 
 **Returns**
 
-- `envs:table`: key-value pairs of the environment variables.
+- `env:string|table<string, string>`: a string, or key-value pairs of the environment variables.
 - `err:string`: error message.
 
 **NOTE**
@@ -35,5 +36,5 @@ FOO='BAR'
 HELLO='WORLD'
 ```
 
-the above global variables become environment variables.
+the above global variables are treated as the environment variables.
 
