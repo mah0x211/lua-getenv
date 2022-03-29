@@ -2,7 +2,7 @@ lua-getenv
 =======
 
 [![test](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml/badge.svg)](https://github.com/mah0x211/lua-getenv/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/mah0x211/lua-getenv/badge.svg?branch=master)](https://coveralls.io/github/mah0x211/lua-getenv?branch=master)
+[![codecov](https://codecov.io/gh/mah0x211/lua-getenv/branch/master/graph/badge.svg)](https://codecov.io/gh/mah0x211/lua-getenv)
 
 environment variables retrieval module.
 
